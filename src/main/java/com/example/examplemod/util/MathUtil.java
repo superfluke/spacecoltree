@@ -1,7 +1,10 @@
 package com.example.examplemod.util;
 
+import java.util.ArrayList;
+
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import scala.actors.threadpool.Arrays;
 
 public class MathUtil
 {
@@ -128,6 +131,85 @@ public class MathUtil
     public static double vec3dMag(Vec3d vec)
     {
 	return Math.sqrt((vec.x*vec.x)+(vec.y*vec.y)+(vec.z*vec.z));
+    }
+    
+    // rotates a blockpos by degreesToRotate keeping same y pos
+    public static BlockPos rotatePointOnXAxis(BlockPos startPoint, int degreesToRotate, int distanceFromCenter)
+    {
+	double stupidRadians = Math.toRadians(degreesToRotate);
+	int xDist = (int) Math.round(Math.cos(stupidRadians) * distanceFromCenter);
+	int zDist = (int) Math.round(Math.sin(stupidRadians) * distanceFromCenter);
+	zDist *= -1; // invert z value to match minecraft's -Z = north
+	BlockPos endPoint = startPoint.add(xDist, 0, zDist);
+	return endPoint;
+    }
+    
+    // rotates a blockpos by degreesToRotate keeping same z pos
+    public static BlockPos rotatePointOnYAxis(BlockPos startPoint, int degreesToRotate, int distanceFromCenter)
+    {
+	double stupidRadians = Math.toRadians(degreesToRotate);
+	int yDist = (int) Math.round(Math.cos(stupidRadians) * distanceFromCenter);
+	int xDist = (int) Math.round(Math.sin(stupidRadians) * distanceFromCenter);
+	//zDist *= -1; // invert z value to match minecraft's -Z = north
+	BlockPos endPoint = startPoint.add(xDist, yDist, 0);
+	return endPoint;
+    }
+    
+    //this is cancer. who decided trig was a good idea anyway
+    public static ArrayList<BlockPos> rotateRect(BlockPos startPoint, BlockPos endPoint, Vec3d dir, int radius)
+    {
+	int len = (int)(Math.sqrt(startPoint.distanceSq(endPoint))+0.5);
+	int rad2 = radius*radius;
+	ArrayList<BlockPos> posArray = new ArrayList<BlockPos>();
+	
+	double yAngle = Math.toRadians(20);
+	double xAngle = Math.toRadians(50);
+	
+	double yRotyMod = Math.cos(yAngle);
+	double yRotxMod = Math.sin(yAngle);
+	double xRotxMod = Math.cos(xAngle);
+	double xRotzMod = Math.sin(xAngle);
+	
+	for(int x=-radius; x<=radius; x++)
+	{
+	    for(int z=-radius; z<=radius; z++)
+	    {
+		//if((x*x + z*z) > rad2)
+		   // continue;
+		
+		
+//		for(int y=0; y<len; y++)
+//		{
+//		    double x0 = x + startPoint.getX();
+//		    double y0 = startPoint.getY();
+//		    double z0 = z + startPoint.getZ();
+//		    
+//		    //rotate on y
+//		    double xRot = x0 + y*yRotxMod;
+//		    double yRot = y0 + y*yRotyMod;
+//		    
+//		    //rotate on z
+//		    double xDist = Math.abs(xRot-x0);
+//		    xRot = xRot + xDist*xRotxMod;
+//		    double zRot = z0 + xDist*xRotzMod;
+////		    double zRot = z0;
+//		    BlockPos rotPos = new BlockPos((int)(xRot+0.5), (int)(yRot+0.5), (int)(zRot+0.5));
+//		    
+//		    
+//		    posArray.add(rotPos);
+//		}
+		
+		double xRot = x + startPoint.getX() + len*yRotxMod;
+		double yRot = startPoint.getY() + len*yRotyMod;
+		double xDist = Math.abs(xRot-(x + startPoint.getX()));
+		xRot = xRot + xDist*xRotxMod;
+		double zRot = z + startPoint.getZ() + xDist*xRotzMod;
+		BlockPos rotPos = new BlockPos((int)(xRot+0.5), (int)(yRot+0.5), (int)(zRot+0.5));
+		posArray.addAll(Arrays.asList(MathUtil.getBresehnamArrays(startPoint.add(x, 0, z), rotPos)));
+
+	    }
+	}
+	return posArray;
     }
 
 

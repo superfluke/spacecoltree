@@ -40,15 +40,22 @@ public class Branch
 	return newPos;
     }
 
-    public void drawBranch(World world, IBlockState state)
+    public void drawBranch(World world, IBlockState state, int radius)
     {
 	if(this.parent != null)
 	{
-	    BlockPos[] branchArray = MathUtil.getBresehnamArrays(this.pos, parent.pos);
-	    for(BlockPos p : branchArray)
+	    for(int x=0; x<=radius; x++)
 	    {
-		world.setBlockState(p, state);
+		for(int z=0; z<=radius; z++)
+		{
+		    BlockPos[] branchArray = MathUtil.getBresehnamArrays(this.pos.add(x,0,z), parent.pos.add(x,0,z));
+		    for(BlockPos p : branchArray)
+		    {
+			world.setBlockState(p, state);
+		    }  
+		}
 	    }
+	    
 	}
     }
     

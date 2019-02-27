@@ -24,7 +24,7 @@ public class Tree
 	this.minDist = 4;
 	
 	this.base = pos;
-	initLeaves(2800);
+	initLeaves(500);
 	this.root = new Branch(pos, new Vec3d(0,1,0));
 	this.branches.add(this.root);	
 	makeTrunk();
@@ -118,7 +118,8 @@ public class Tree
 		branch.dir = MathUtil.vec3dDiv(branch.dir, branch.count);
 		branch.dir = branch.dir.normalize();
 		Branch newBranch = new Branch(branch);
-		this.branches.add(newBranch);
+		//if(!newBranch.pos.equals(newBranch.parent.pos))
+		    this.branches.add(newBranch);
 		branch.reset();
 	    }
 	    
