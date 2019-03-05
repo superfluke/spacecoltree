@@ -50,9 +50,9 @@ public class DebugCommand extends CommandBase
         {
         	double x = ((EntityPlayer) sender).posX;
         	double z = ((EntityPlayer) sender).posZ;
-        	tree.generate(server.getEntityWorld(), new Random(), new BlockPos(x+1, 4, z+1));
+//        	tree.generate(server.getEntityWorld(), new Random(), new BlockPos(x+1, 4, z+1));
         	
-//        	rottest.generate(server.getEntityWorld(), new Random(), new BlockPos(x+1, 4, z+1));
+        	rottest.generate(server.getEntityWorld(), new Random(), new BlockPos(x+1, 4, z+1));
         	//sender.sendMessage(new TextComponentString("hello"));
         }
         

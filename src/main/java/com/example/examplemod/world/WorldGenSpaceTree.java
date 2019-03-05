@@ -37,29 +37,22 @@ public class WorldGenSpaceTree extends WorldGenerator
     
     public void drawBlocks(World world, BlockPos pos)
     {
-	for(Leaf leaf : this.tree.leaves)
-	{
-	    world.setBlockState(leaf.pos, green);
-	}
-	
-	//for(Branch branch : this.tree.branches)
-	int numBranches = this.tree.branches.size();
-	System.out.println(numBranches);
-	for(int n=0; n<numBranches; n++)
-	{
-//	    if(n>30)
-//		continue;
-	    Branch branch = this.tree.branches.get(n);
-	    int thicc = getBranchThickness(numBranches-n, numBranches);
-	    branch.drawBranch(world, log, thicc);
-	}
-    }
-    
-    public static int getBranchThickness(int index, int numBranches)
-    {
-	double minBranchRadius = 0;
-	double maxBranchRadius = 2;
-	return (int)(((((index - 0) * (maxBranchRadius - minBranchRadius)) / ((double)numBranches - 0)) + minBranchRadius) + 0.5);
+		for(Leaf leaf : this.tree.leaves)
+		{
+		    world.setBlockState(leaf.pos, green);
+		}
+		
+		//for(Branch branch : this.tree.branches)
+		int numBranches = this.tree.branches.size();
+		System.out.println(numBranches);
+		for(int n=0; n<numBranches; n++)
+		{
+	//	    if(n>30)
+	//		continue;
+		    Branch branch = this.tree.branches.get(n);
+		    int thicc = 0;
+		    branch.drawBranch(world, log, thicc);
+		}
     }
 
 }
